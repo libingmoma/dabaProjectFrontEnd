@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -78,107 +78,107 @@
         var studentId = getRoleId("studentId=");
 
         function getRoleId(role) {
-            var url = window.location.href;
-            if (url.indexOf(role) == -1)
-                return null;
-            var idStartIndex = url.indexOf(role) + role.length;
-            var idEndIndex = url.indexOf("&", idStartIndex);
-            var projectId = (idEndIndex == -1) ? url.slice(idStartIndex) : url.slice(idStartIndex, idEndIndex);
-            return projectId;
+        var url = window.location.href;
+        if (url.indexOf(role) == -1)
+        return null;
+        var idStartIndex = url.indexOf(role) + role.length;
+        var idEndIndex = url.indexOf("&", idStartIndex);
+        var projectId = (idEndIndex == -1) ? url.slice(idStartIndex) : url.slice(idStartIndex, idEndIndex);
+        return projectId;
         }
 
         function getStudentName() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.withCredentials = true;
-            xhttp.open("GET", localhost + "/admin/info", true);
-            xhttp.onload = function() {
-                var student_info = JSON.parse(xhttp.responseText).data[0];
-                var name = document.querySelectorAll("span[title=student_name]");
-                name[0].innerHTML = student_info.name;
-            }
-            xhttp.send();
+        var xhttp = new XMLHttpRequest();
+        xhttp.withCredentials = true;
+        xhttp.open("GET", localhost + "/admin/info", true);
+        xhttp.onload = function() {
+        var student_info = JSON.parse(xhttp.responseText).data[0];
+        var name = document.querySelectorAll("span[title=student_name]");
+        name[0].innerHTML = student_info.name;
+        }
+        xhttp.send();
         }
 
 
 
         function getStudentInfo() {
-            if (studentId != null) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.withCredentials = true;
-                xhttp.open("GET", localhost + "/admin/student/info?" + "studentId=" + studentId, true);
-                xhttp.onload = function() {
-                    if (xhttp.status == 200) {
-                        var info = JSON.parse(xhttp.responseText).data[0];
-                        //console.log(JSON.parse(xhttp.responseText));
-                        document.querySelector("input[name=id]").value = info.id;
-                        document.getElementById("id_username").value = info.username;
-                        document.getElementById("id_password").value = info.password;
-                        document.getElementById("id_sex").value = info.sex;
-                        document.getElementById("id_birth").value = info.birth;
-                        document.getElementById("id_phone").value = info.phone;
-                        document.getElementById("id_grade").value = info.grade;
-                        document.getElementById("id_major").value = info.major;
-                        document.getElementById("id_studentName").value = info.name;
-                    } else {
-                        console.log(xhttp.status);
-                        console.log(xhttp.responseText);
-                    }
-                }
-                xhttp.send();
-            }
+        if (studentId != null) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.withCredentials = true;
+        xhttp.open("GET", localhost + "/admin/student/info?" + "studentId=" + studentId, true);
+        xhttp.onload = function() {
+        if (xhttp.status == 200) {
+        var info = JSON.parse(xhttp.responseText).data[0];
+        //console.log(JSON.parse(xhttp.responseText));
+        document.querySelector("input[name=id]").value = info.id;
+        document.getElementById("id_username").value = info.username;
+        document.getElementById("id_password").value = info.password;
+        document.getElementById("id_sex").value = info.sex;
+        document.getElementById("id_birth").value = info.birth;
+        document.getElementById("id_phone").value = info.phone;
+        document.getElementById("id_grade").value = info.grade;
+        document.getElementById("id_major").value = info.major;
+        document.getElementById("id_studentName").value = info.name;
+        } else {
+        console.log(xhttp.status);
+        console.log(xhttp.responseText);
+        }
+        }
+        xhttp.send();
+        }
         }
 
         $(function() {
-            $("#id_button").click(function() {
-                var data = {};
-                $("form").serializeArray().map(function(x) {
-                    if (data[x.name] !== undefined) {
-                        if (!data[x.name].push) {
-                            data[x.name] = [data[x.name]];
-                        }
-                        data[x.name].push(x.value || '');
-                    } else {
-                        data[x.name] = x.value || '';
-                    }
-                });
-                // $("#demo").html(JSON.stringify(data));
-                //console.log(localhost);
-                var xhr = new XMLHttpRequest();
-                xhr.withCredentials = true;
-                xhr.open("POST", localhost + "/admin/student/update", true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onload = function() {
-                    if (xhr.status == 200) {
-                        //console.log(xhr.responseText);
-                        jsonResponse = JSON.parse(xhr.responseText);
-                        if (jsonResponse.isOk == true)
-                            alert("已经成功保存！");
-                        else {
-                            console.log(jsonResponse);
-                            alert(jsonResponse.msg);
-                        }
-                    }
+        $("#id_button").click(function() {
+        var data = {};
+        $("form").serializeArray().map(function(x) {
+        if (data[x.name] !== undefined) {
+        if (!data[x.name].push) {
+        data[x.name] = [data[x.name]];
+        }
+        data[x.name].push(x.value || '');
+        } else {
+        data[x.name] = x.value || '';
+        }
+        });
+        // $("#demo").html(JSON.stringify(data));
+        //console.log(localhost);
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open("POST", localhost + "/admin/student/update", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+        if (xhr.status == 200) {
+        //console.log(xhr.responseText);
+        jsonResponse = JSON.parse(xhr.responseText);
+        if (jsonResponse.isOk == true)
+        alert("已经成功保存！");
+        else {
+        console.log(jsonResponse);
+        alert(jsonResponse.msg);
+        }
+        }
 
-                }
-                xhr.send(JSON.stringify(data));
-                // $.post(localhost + "/student/info/update",
-                //     JSON.stringify(data),
-                //     function (data, status) {
-                //         alert("已经成功保存！");
-                //         //console.log(data);
-                //     });
-            });
+        }
+        xhr.send(JSON.stringify(data));
+        // $.post(localhost + "/student/info/update",
+        //     JSON.stringify(data),
+        //     function (data, status) {
+        //         alert("已经成功保存！");
+        //         //console.log(data);
+        //     });
+        });
         });
 
         function logout() {
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.open("GET", localhost + "/logout", true);
-            xhr.onload = function() {
-                if (xhr.status == 200)
-                    window.location.href = "../login.html";
-            }
-            xhr.send();
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open("GET", localhost + "/logout", true);
+        xhr.onload = function() {
+        if (xhr.status == 200)
+        window.location.href = "../login.html";
+        }
+        xhr.send();
         }
     </script>
 </head>
@@ -282,39 +282,56 @@
                         <!--                    </p>-->
 
                         <form onsubmit="return false;" class="form_body">
-                            <div class="field">
-                                用户名：<br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;
+                                <span> 用户名：</span>
                                 <input type="text" name="username" id="id_username" value="" />
                             </div>
-                            <div class="field">
-                                密码：<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span> 密码：</span>
                                 <input type="password" name="password" id="id_password" value="" />
                             </div>
-                            <div class="field">
-                                性别：<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>  性别：</span>
                                 <input type="text" name="sex" id="id_sex" value="" />
                             </div>
-                            <div class="field">
-                                生日：(输入格式如:2020-12-25)<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>  生日：</span>
                                 <input type="date" name="birth" id="id_birth" value="" />
+
                             </div>
-                            <div class="field">
-                                手机号码：<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                <span>手机号码：</span>
                                 <input type="text" name="phone" id="id_phone" value="" />
                             </div>
-                            <div class="field">
-                                年级：<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>  年级：</span>
                                 <input type="text" name="grade" id="id_grade" value="" />
                             </div>
-                            <div class="field">
-                                专业：<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>  专业：</span>
                                 <input type="text" name="major" id="id_major" value="" />
                             </div>
-                            <div class="field">
-                                姓名：<br />
+                            <br /><br /><br />
+                            <div class="field" style="left: 465px; position: absolute; ">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span>  姓名：</span>
                                 <input type="text" name="name" id="id_studentName" value="" />
                             </div>
-                            <br>
+
+                            <br /><br /><br /><br />
+                            &nbsp;
                             <input type="button" value="保存" id="id_button" />
                         </form>
 
@@ -339,7 +356,7 @@
         <!-- layui规范化用法 -->
         <script type="text/javascript">
             layui.config({
-                base: '../../static/js/'
+            base: '../../static/js/'
             }).use('student/main');
         </script>
 </body>
